@@ -9,64 +9,140 @@
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
-        body { background-color: #f8fafc; color: #334155; }
-        .section-header { text-align: center; margin-bottom: 40px; padding: 0 20px; }
-        .section-title { color: #003366; font-size: 28px; font-weight: 800; margin-top: 15px; }
-        .section-tag { background: rgba(197, 160, 89, 0.15); color: #a47e3b; padding: 6px 18px; border-radius: 20px; font-size: 14px; font-weight: 700; display: inline-block; border: 1px solid rgba(197, 160, 89, 0.3); }
-        .section-subtitle { color: #64748b; font-size: 16px; margin-top: 10px; }
-        .hero-premium-section { background: linear-gradient(135deg, #00152b 0%, #003366 100%); color: #ffffff; text-align: center; padding: 80px 20px 100px 20px; }
-        .hero-badge { background: rgba(197, 160, 89, 0.2); border: 1px solid #c5a059; color: #c5a059; padding: 6px 16px; border-radius: 30px; display: inline-block; font-size: 14px; font-weight: 600; margin-bottom: 25px; }
-        .hero-main-title { font-size: 42px; font-weight: 800; margin-bottom: 12px; color: #c5a059; }
-        .hero-sub-title { font-size: 22px; font-weight: 400; color: #f1f5f9; margin-bottom: 25px; line-height: 1.5; }
-        .hero-description { font-size: 16px; line-height: 1.8; max-width: 800px; margin: 0 auto; color: #cbd5e1; }
+        :root {
+            --primary: #003366;
+            --primary-dark: #00152b;
+            --gold: #c5a059;
+            --gold-light: rgba(197, 160, 89, 0.15);
+            --text-dark: #334155;
+            --text-muted: #64748b;
+            --bg-light: #f8fafc;
+        }
+
+        * { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            font-family: 'Cairo', sans-serif; 
+            scroll-behavior: smooth;
+        }
+        
+        body { background-color: var(--bg-light); color: var(--text-dark); overflow-x: hidden; }
+        
+        /* تأثير الظهور عند التمرير */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-header { text-align: center; margin-bottom: 50px; padding: 0 20px; }
+        .section-title { color: var(--primary); font-size: 32px; font-weight: 800; margin-top: 15px; position: relative; display: inline-block; }
+        .section-title::after { content: ''; position: absolute; width: 40%; height: 3px; background: var(--gold); bottom: -10px; left: 30%; border-radius: 2px; }
+        
+        .section-tag { background: var(--gold-light); color: var(--gold); padding: 8px 20px; border-radius: 30px; font-size: 14px; font-weight: 700; display: inline-block; border: 1px solid rgba(197, 160, 89, 0.3); backdrop-filter: blur(5px); }
+        .section-subtitle { color: var(--text-muted); font-size: 17px; margin-top: 20px; }
+        
+        /* Hero Section المتحرك */
+        .hero-premium-section { 
+            background: linear-gradient(-45deg, #00152b, #003366, #004d99, #00152b);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #ffffff; 
+            text-align: center; 
+            padding: 100px 20px 120px 20px; 
+            position: relative;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .hero-badge { background: rgba(197, 160, 89, 0.2); border: 1px solid var(--gold); color: var(--gold); padding: 8px 20px; border-radius: 30px; display: inline-block; font-size: 15px; font-weight: 700; margin-bottom: 30px; letter-spacing: 0.5px; animation: pulse 2s infinite; }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(197, 160, 89, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(197, 160, 89, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(197, 160, 89, 0); }
+        }
+
+        .hero-main-title { font-size: 48px; font-weight: 800; margin-bottom: 15px; color: var(--gold); text-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .hero-sub-title { font-size: 24px; font-weight: 600; color: #f1f5f9; margin-bottom: 25px; line-height: 1.6; }
+        .hero-description { font-size: 17px; line-height: 1.9; max-width: 800px; margin: 0 auto; color: #cbd5e1; font-weight: 300; }
+        
+        /* مربع البحث */
+        .search-premium-section { max-width: 700px; margin: -40px auto 60px auto; padding: 0 20px; position: relative; z-index: 10; }
+        .search-premium-form { display: flex; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 50px; overflow: hidden; box-shadow: 0 20px 40px rgba(0, 34, 68, 0.15); transition: all 0.3s ease; }
+        .search-premium-form:focus-within { box-shadow: 0 20px 40px rgba(0, 51, 102, 0.25); border-color: var(--gold); transform: translateY(-2px); }
+        .search-premium-form input { flex: 1; padding: 22px 30px; border: none; outline: none; font-size: 16px; background: transparent; }
+        .search-premium-form button { background: var(--primary); color: #ffffff; border: none; padding: 0 45px; font-size: 18px; font-weight: bold; cursor: pointer; transition: all 0.3s ease; }
+        .search-premium-form button:hover { background: var(--gold); }
         
         /* باقات السعودية */
-        .packages-section { padding: 60px 20px; max-width: 1200px; margin: 0 auto; }
-        .packages-grid { display: grid; grid-template-columns: 1fr; gap: 25px; margin-top: 30px; }
-        .package-card { background: #ffffff; border-radius: 20px; padding: 30px; box-shadow: 0 10px 25px rgba(0,0,0,0.03); border: 1px solid #e2e8f0; transition: transform 0.3s ease; position: relative; overflow: hidden; }
-        .package-card:hover { transform: translateY(-5px); }
-        .package-card.featured { border: 2px solid #c5a059; }
-        .package-title { font-size: 22px; font-weight: 700; color: #003366; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
-        .package-details { display: flex; flex-direction: column; gap: 12px; margin-bottom: 25px; }
-        .package-row { display: flex; justify-content: space-between; font-size: 15px; border-bottom: 1px dashed #f1f5f9; padding-bottom: 8px; }
-        .package-row span:first-child { color: #64748b; font-weight: 600; }
-        .package-row span:last-child { color: #003366; font-weight: 700; }
-        .package-btn { display: block; text-align: center; background: #003366; color: #ffffff; padding: 12px; border-radius: 30px; text-decoration: none; font-weight: bold; font-size: 15px; transition: background 0.2s; }
-        .package-btn:hover { background: #c5a059; }
+        .packages-section { padding: 80px 20px; max-width: 1200px; margin: 0 auto; }
+        .packages-grid { display: grid; grid-template-columns: 1fr; gap: 30px; margin-top: 40px; }
+        .package-card { background: #ffffff; border-radius: 24px; padding: 35px 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.04); border: 1px solid #f1f5f9; transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; overflow: hidden; }
+        .package-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.08); border-color: #e2e8f0; }
+        .package-card.featured { border: 2px solid var(--gold); background: linear-gradient(to bottom, #ffffff, #fdfbf7); }
+        .package-card.featured::before { content: 'الأكثر طلباً'; position: absolute; top: 15px; left: -35px; background: var(--gold); color: #fff; padding: 5px 40px; transform: rotate(-45deg); font-size: 12px; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+        .package-card.featured:hover { box-shadow: 0 20px 40px rgba(197, 160, 89, 0.2); }
+        
+        .package-title { font-size: 24px; font-weight: 800; color: var(--primary); margin-bottom: 25px; display: flex; align-items: center; gap: 12px; }
+        .package-details { display: flex; flex-direction: column; gap: 15px; margin-bottom: 30px; }
+        .package-row { display: flex; justify-content: space-between; font-size: 16px; border-bottom: 1px dashed #e2e8f0; padding-bottom: 10px; transition: all 0.3s; }
+        .package-card:hover .package-row { border-bottom-color: #cbd5e1; }
+        .package-row span:first-child { color: var(--text-muted); font-weight: 600; }
+        .package-row span:last-child { color: var(--primary); font-weight: 800; }
+        
+        .package-btn { display: block; text-align: center; background: linear-gradient(90deg, var(--primary) 0%, #004d99 100%); color: #ffffff; padding: 15px; border-radius: 30px; text-decoration: none; font-weight: bold; font-size: 16px; transition: all 0.3s; box-shadow: 0 4px 15px rgba(0,51,102,0.2); }
+        .package-btn:hover { background: linear-gradient(90deg, var(--gold) 0%, #d4af37 100%); transform: scale(1.05); box-shadow: 0 6px 20px rgba(197,160,89,0.3); }
 
-        .search-premium-section { max-width: 600px; margin: -35px auto 60px auto; padding: 0 20px; position: relative; z-index: 10; }
-        .search-premium-form { display: flex; background: #ffffff; border: 1px solid #e2e8f0; border-radius: 40px; overflow: hidden; box-shadow: 0 15px 35px rgba(0, 34, 68, 0.1); }
-        .search-premium-form input { flex: 1; padding: 18px 25px; border: none; outline: none; font-size: 15px; }
-        .search-premium-form button { background: #003366; color: #ffffff; border: none; padding: 0 35px; font-size: 16px; font-weight: bold; cursor: pointer; }
+        /* إحصائيات النجاح */
+        .success-stats-section { padding: 40px 20px 80px; max-width: 1200px; margin: 0 auto; }
+        .stats-grid { display: grid; grid-template-columns: 1fr; gap: 30px; }
+        .stat-card { background: #ffffff; border-radius: 20px; padding: 40px 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.03); text-align: center; transition: transform 0.3s; }
+        .stat-card:hover { transform: translateY(-5px); }
+        .border-gold { border-top: 5px solid var(--gold); }
+        .border-blue { border-top: 5px solid var(--primary); }
+        .stat-icon { font-size: 45px; margin-bottom: 20px; display: inline-block; padding: 15px; background: var(--bg-light); border-radius: 50%; }
+        .stat-card h3 { color: var(--primary); font-size: 22px; margin-bottom: 15px; font-weight: 800; }
+        .stat-card p { color: var(--text-muted); font-size: 16px; line-height: 1.8; }
         
-        .success-stats-section { padding: 20px; max-width: 1200px; margin: 0 auto 40px auto; }
-        .stats-grid { display: grid; grid-template-columns: 1fr; gap: 25px; }
-        .stat-card { background: #ffffff; border-radius: 16px; padding: 30px 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.02); text-align: center; }
-        .border-gold { border-top: 4px solid #c5a059; }
-        .border-blue { border-top: 4px solid #003366; }
-        .stat-icon { font-size: 40px; margin-bottom: 15px; }
-        .stat-card h3 { color: #003366; font-size: 20px; margin-bottom: 12px; font-weight: 700; }
-        .stat-card p { color: #64748b; font-size: 15px; line-height: 1.7; }
-        
-        .sectors-premium-section { background: #f1f5f9; padding: 60px 20px; }
+        /* المجالات الاستثمارية */
+        .sectors-premium-section { background: #f1f5f9; padding: 80px 20px; }
         .sectors-premium-grid { display: grid; grid-template-columns: 1fr; gap: 30px; max-width: 1200px; margin: 0 auto; }
-        .sector-premium-card { background: #ffffff; border-radius: 20px; padding: 40px 30px; text-align: center; border: 1px solid #e2e8f0; }
-        .sector-premium-icon { font-size: 50px; margin-bottom: 20px; }
-        .sector-premium-card h3 { color: #003366; font-size: 22px; margin-bottom: 15px; font-weight: 700; }
-        .sector-premium-card p { color: #64748b; font-size: 15px; line-height: 1.7; margin-bottom: 30px; min-height: 70px; }
-        .sector-premium-btn { display: inline-block; background: #003366; color: #ffffff; padding: 12px 40px; border-radius: 30px; text-decoration: none; font-weight: bold; font-size: 15px; }
+        .sector-premium-card { background: #ffffff; border-radius: 24px; padding: 45px 30px; text-align: center; border: 1px solid transparent; box-shadow: 0 10px 25px rgba(0,0,0,0.02); transition: all 0.4s; }
+        .sector-premium-card:hover { border-color: var(--gold); box-shadow: 0 20px 40px rgba(0,0,0,0.06); transform: translateY(-8px); }
+        .sector-premium-icon { font-size: 55px; margin-bottom: 25px; transition: transform 0.3s; }
+        .sector-premium-card:hover .sector-premium-icon { transform: scale(1.1) rotate(5deg); }
+        .sector-premium-card h3 { color: var(--primary); font-size: 22px; margin-bottom: 15px; font-weight: 800; }
+        .sector-premium-card p { color: var(--text-muted); font-size: 16px; line-height: 1.8; margin-bottom: 35px; min-height: 80px; }
+        .sector-premium-btn { display: inline-block; background: transparent; color: var(--primary); padding: 12px 40px; border-radius: 30px; text-decoration: none; font-weight: bold; font-size: 16px; border: 2px solid var(--primary); transition: all 0.3s; }
+        .sector-premium-card:hover .sector-premium-btn { background: var(--primary); color: #fff; }
         
-        .cta-premium-footer { background: #00152b; color: #ffffff; text-align: center; padding: 70px 20px; }
-        .cta-premium-footer h3 { color: #c5a059; font-size: 26px; margin-bottom: 15px; font-weight: 700; }
-        .cta-premium-footer p { color: #94a3b8; font-size: 16px; max-width: 600px; margin: 0 auto 35px auto; line-height: 1.7; }
-        .cta-telegram-btn { display: inline-flex; align-items: center; background: #229ED9; color: #ffffff; padding: 16px 45px; border-radius: 35px; text-decoration: none; font-weight: bold; font-size: 16px; }
-        .no-results { text-align: center; grid-column: 1 / -1; color: #64748b; font-size: 16px; padding: 30px; display: none; }
+        /* الفوتر */
+        .cta-premium-footer { background: var(--primary-dark); color: #ffffff; text-align: center; padding: 90px 20px; position: relative; overflow: hidden; }
+        .cta-premium-footer::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(197,160,89,0.1) 0%, transparent 60%); z-index: 0; }
+        .cta-premium-footer * { position: relative; z-index: 1; }
+        .cta-premium-footer h3 { color: var(--gold); font-size: 30px; margin-bottom: 20px; font-weight: 800; }
+        .cta-premium-footer p { color: #94a3b8; font-size: 17px; max-width: 650px; margin: 0 auto 40px auto; line-height: 1.9; }
+        
+        .cta-telegram-btn { display: inline-flex; align-items: center; background: linear-gradient(135deg, #229ED9 0%, #1c88ba 100%); color: #ffffff; padding: 18px 50px; border-radius: 40px; text-decoration: none; font-weight: bold; font-size: 18px; box-shadow: 0 10px 25px rgba(34, 158, 217, 0.3); transition: all 0.3s; }
+        .cta-telegram-btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 15px 35px rgba(34, 158, 217, 0.4); }
+        
+        .no-results { text-align: center; grid-column: 1 / -1; color: var(--text-muted); font-size: 18px; padding: 40px; display: none; background: #fff; border-radius: 20px; border: 1px dashed #cbd5e1; }
         
         @media (min-width: 768px) {
-            .stats-grid, .sectors-premium-grid, .packages-grid { grid-template-columns: repeat(3, 1fr); }
-            .hero-main-title { font-size: 54px; }
-            .hero-sub-title { font-size: 26px; }
+            .stats-grid, .sectors-premium-grid { grid-template-columns: repeat(3, 1fr); }
+            .packages-grid { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+            .hero-main-title { font-size: 60px; }
+            .hero-sub-title { font-size: 28px; }
         }
     </style>
 </head>
@@ -82,23 +158,22 @@
         </p>
     </header>
 
-    <section class="search-premium-section">
+    <section class="search-premium-section reveal">
         <form class="search-premium-form" id="searchForm">
             <input type="text" id="searchInput" placeholder="ابحث عن المشاريع أو الباقات الاستثمارية...">
             <button type="submit">بحث</button>
         </form>
     </section>
 
-    <!-- باقات السعودية (SAR) - رابط الحجز: @Aoulaalkhlige -->
+    <!-- باقات السعودية (SAR) -->
     <section class="packages-section">
-        <div class="section-header">
+        <div class="section-header reveal">
             <span class="section-tag">🇸🇦 العوائد الاستثمارية</span>
             <h2 class="section-title">باقات السعودية (SAR)</h2>
             <p class="section-subtitle">اختر الباقة المناسبة لميزانيتك وابدأ رحلة الأرباح اليومية بثقة تامة</p>
         </div>
         <div class="packages-grid">
-            <!-- 1. برونزية -->
-            <div class="package-card">
+            <div class="package-card reveal">
                 <div class="package-title">🥉 برونزية</div>
                 <div class="package-details">
                     <div class="package-row"><span>رأس المال:</span><span>3,000 SAR</span></div>
@@ -109,8 +184,7 @@
                 <a href="https://t.me/Aoulaalkhlige" class="package-btn" target="_blank">احجز باقتك الآن</a>
             </div>
 
-            <!-- 2. فضية -->
-            <div class="package-card featured">
+            <div class="package-card featured reveal" style="transition-delay: 0.1s;">
                 <div class="package-title">🥈 فضية ⭐</div>
                 <div class="package-details">
                     <div class="package-row"><span>رأس المال:</span><span>5,000 SAR</span></div>
@@ -121,8 +195,7 @@
                 <a href="https://t.me/Aoulaalkhlige" class="package-btn" target="_blank">احجز باقتك الآن</a>
             </div>
 
-            <!-- 3. ذهبية -->
-            <div class="package-card">
+            <div class="package-card reveal" style="transition-delay: 0.2s;">
                 <div class="package-title">🥇 ذهبية</div>
                 <div class="package-details">
                     <div class="package-row"><span>رأس المال:</span><span>7,000 SAR</span></div>
@@ -133,8 +206,7 @@
                 <a href="https://t.me/Aoulaalkhlige" class="package-btn" target="_blank">احجز باقتك الآن</a>
             </div>
 
-            <!-- 4. بلاتينية -->
-            <div class="package-card">
+            <div class="package-card reveal" style="transition-delay: 0.3s;">
                 <div class="package-title">💎 بلاتينية</div>
                 <div class="package-details">
                     <div class="package-row"><span>رأس المال:</span><span>10,000 SAR</span></div>
@@ -145,8 +217,7 @@
                 <a href="https://t.me/Aoulaalkhlige" class="package-btn" target="_blank">احجز باقتك الآن</a>
             </div>
 
-            <!-- 5. ماسية -->
-            <div class="package-card featured">
+            <div class="package-card featured reveal" style="transition-delay: 0.4s;">
                 <div class="package-title">💠 ماسية</div>
                 <div class="package-details">
                     <div class="package-row"><span>رأس المال:</span><span>15,000 SAR</span></div>
@@ -160,22 +231,22 @@
     </section>
 
     <section class="success-stats-section">
-        <div class="section-header">
+        <div class="section-header reveal">
             <span class="section-tag">إنجاز يتحدث.. ووعود تتنفّذ!</span>
             <h2 class="section-title">نجاحاتنا على أرض الواقع</h2>
         </div>
         <div class="stats-grid">
-            <div class="stat-card border-gold">
+            <div class="stat-card border-gold reveal">
                 <div class="stat-icon">💸</div>
                 <h3>أرباح قياسية</h3>
                 <p>تم تسليم الأرباح بالكامل للمستفيدين بعد تحقيق عوائد مذهلة وفي وقت قياسي خلال شهر واحد فقط من مشروع مزارع الدواجن.</p>
             </div>
-            <div class="stat-card border-blue">
+            <div class="stat-card border-blue reveal" style="transition-delay: 0.15s;">
                 <div class="stat-icon">📸</div>
                 <h3>شفافية مطلقة</h3>
                 <p>نوفر نماذج وعينات حقيقية من إيصالات التحويلات المالية التي تم تسليمها للمشاركين تأكيداً للمصداقية.</p>
             </div>
-            <div class="stat-card border-gold">
+            <div class="stat-card border-gold reveal" style="transition-delay: 0.3s;">
                 <div class="stat-icon">⚖️</div>
                 <h3>رسمي وقانوني 100%</h3>
                 <p>تتم جميع عمليات الإدارة والتوزيع وفق الإجراءات النظامية والقانونية المعتمدة وبناءً على الشروط المتفق عليها.</p>
@@ -183,26 +254,26 @@
         </div>
     </section>
 
-    <!-- مجالاتنا الاستثمارية - رابط الاستكشاف: https://t.me/+eSd5rz6xj18wNmI0 -->
+    <!-- مجالاتنا الاستثمارية -->
     <section class="sectors-premium-section">
-        <div class="section-header">
+        <div class="section-header reveal">
             <h2 class="section-title">مجالاتنا الاستثمارية المتميزة</h2>
             <p class="section-subtitle">تتوزع استثماراتنا في قطاعات حيوية مدروسة بدقة لتقليل المخاطر ورفع العوائد</p>
         </div>
         <div class="sectors-premium-grid" id="sectorsGrid">
-            <div class="sector-premium-card">
+            <div class="sector-premium-card reveal">
                 <div class="sector-premium-icon">🐔</div>
                 <h3>المشاريع الزراعية والحيوانية</h3>
                 <p>استثمارات نوعية في قطاع مزارع الدواجن والإنتاج الغذائي القائم على تشغيل احترافي يضمن تدفقات ربحية سريعة.</p>
                 <a href="https://t.me/+eSd5rz6xj18wNmI0" class="sector-premium-btn" target="_blank">استكشف الفرص</a>
             </div>
-            <div class="sector-premium-card">
+            <div class="sector-premium-card reveal" style="transition-delay: 0.15s;">
                 <div class="sector-premium-icon">🏭</div>
                 <h3>المشاريع الصناعية والإنتاجية</h3>
                 <p>تأسيس وتطوير المصانع وخطوط الإنتاج الكبرى (مثل مصانع البلاستيك) لبناء أصول قوية ومستدامة على المدى الطويل.</p>
                 <a href="https://t.me/+eSd5rz6xj18wNmI0" class="sector-premium-btn" target="_blank">استكشف الفرص</a>
             </div>
-            <div class="sector-premium-card">
+            <div class="sector-premium-card reveal" style="transition-delay: 0.3s;">
                 <div class="sector-premium-icon">🏢</div>
                 <h3>الاستثمارات التجارية والعقارية</h3>
                 <p>اقتناص الفرص العقارية والتجارية الواعدة في الأسواق الخليجية لتعزيز قوة المحفظة الاستثمارية بأمان تام.</p>
@@ -212,7 +283,7 @@
         </div>
     </section>
 
-    <footer class="cta-premium-footer">
+    <footer class="cta-premium-footer reveal">
         <h3>لا تفوت الفرصة وابدأ رحلتك الاستثمارية اليوم! 🚀</h3>
         <p>للنمو المالي المستمر وتحقيق تطلعاتكم الاستثمارية مع عُلا الخليج للاستثمار، مقاعدنا ومرحلتنا القادمة بانتظاركم. تواصل معنا الآن للحجز المباشر عبر التليجرام.</p>
         <a href="https://t.me/Aoulaalkhlige" class="cta-telegram-btn" target="_blank">
@@ -222,26 +293,68 @@
 </div>
 
 <script>
+    // وظيفة البحث الأساسية
     document.getElementById('searchForm').addEventListener('submit', function(e) {
         e.preventDefault();
         const keyword = document.getElementById('searchInput').value.toLowerCase().trim();
         const cards = document.querySelectorAll('.sector-premium-card, .package-card');
         let hasResults = false;
+        
         cards.forEach(card => {
             const text = card.textContent.toLowerCase();
             if (text.includes(keyword)) {
                 card.style.display = 'block';
+                // إعادة تشغيل الأنيميشن للكروت الظاهرة
+                setTimeout(() => card.classList.add('active'), 50);
                 hasResults = true;
-            } else { card.style.display = 'none'; }
+            } else { 
+                card.style.display = 'none'; 
+                card.classList.remove('active');
+            }
         });
+        
         const noResultsMsg = document.getElementById('noResults');
-        if (!hasResults && keyword !== '') { noResultsMsg.style.display = 'block'; } else { noResultsMsg.style.display = 'none'; }
+        if (!hasResults && keyword !== '') { 
+            noResultsMsg.style.display = 'block'; 
+        } else { 
+            noResultsMsg.style.display = 'none'; 
+        }
     });
+
     document.getElementById('searchInput').addEventListener('input', function() {
         if (this.value === '') {
-            document.querySelectorAll('.sector-premium-card, .package-card').forEach(card => card.style.display = 'block');
+            document.querySelectorAll('.sector-premium-card, .package-card').forEach(card => {
+                card.style.display = 'block';
+                setTimeout(() => card.classList.add('active'), 50);
+            });
             document.getElementById('noResults').style.display = 'none';
         }
+    });
+
+    // سكريبت إظهار العناصر عند النزول (Scroll Reveal)
+    document.addEventListener("DOMContentLoaded", function() {
+        const reveals = document.querySelectorAll(".reveal");
+        
+        const revealOptions = {
+            threshold: 0.1,
+            rootMargin: "0px 0px -50px 0px"
+        };
+        
+        const revealOnScroll = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(entry => {
+                if (!entry.isIntersecting) {
+                    return;
+                } else {
+                    entry.target.classList.add("active");
+                    // إيقاف المراقبة بعد ظهور العنصر لتحسين الأداء
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, revealOptions);
+
+        reveals.forEach(reveal => {
+            revealOnScroll.observe(reveal);
+        });
     });
 </script>
 </body>
